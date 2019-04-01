@@ -21,14 +21,14 @@
     <%= form.number_field :employee_id %>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :start_date %>
-    <%= form.date_select :start_date %>
+    <%= form.text_field :start_date, prompt: "Start Date", class: "datepicker", :value => (form.object.start_date.strftime('%B %d, %Y') if form.object.start_date != nil)%>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :end_date %>
-    <%= form.date_select :end_date %>
+        <%= form.text_field :end_date, prompt: "End Date", class: "datepicker", :value => (form.object.end_date.strftime('%B %d, %Y') if form.object.end_date != nil)%>
   </div>
 
   <div class="field">
@@ -37,6 +37,7 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit :class=>"btn waves-effect waves-light" %>
+    <%= link_to 'Cancel', assignments_path, :class => 'waves-effect waves-light btn red' %>
   </div>
 <% end %>

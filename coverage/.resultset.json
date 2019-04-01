@@ -1,6 +1,55 @@
 {
   "MiniTest": {
     "coverage": {
+      "/home/ubuntu/workspace/Creamery_phase3/app/models/store.rb": [
+        1,
+        null,
+        1,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null,
+        1,
+        null,
+        1,
+        null,
+        1,
+        null,
+        1,
+        null,
+        1,
+        null,
+        null,
+        4,
+        101,
+        3,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        1,
+        null,
+        1,
+        63,
+        63,
+        63,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/home/ubuntu/workspace/Creamery_phase3/app/models/application_record.rb": [
+        1,
+        1,
+        null
+      ],
       "/home/ubuntu/workspace/Creamery_phase3/app/models/assignment.rb": [
         1,
         null,
@@ -57,11 +106,6 @@
         null,
         null,
         null,
-        null
-      ],
-      "/home/ubuntu/workspace/Creamery_phase3/app/models/application_record.rb": [
-        1,
-        1,
         null
       ],
       "/home/ubuntu/workspace/Creamery_phase3/app/models/employee.rb": [
@@ -133,50 +177,6 @@
         210,
         210,
         210,
-        null,
-        null,
-        null
-      ],
-      "/home/ubuntu/workspace/Creamery_phase3/app/models/store.rb": [
-        1,
-        null,
-        1,
-        null,
-        null,
-        1,
-        1,
-        null,
-        null,
-        null,
-        1,
-        null,
-        1,
-        null,
-        1,
-        null,
-        1,
-        null,
-        1,
-        null,
-        null,
-        4,
-        101,
-        3,
-        null,
-        null,
-        null,
-        1,
-        null,
-        null,
-        null,
-        null,
-        1,
-        null,
-        1,
-        63,
-        63,
-        63,
-        null,
         null,
         null,
         null
@@ -452,6 +452,6 @@
         0
       ]
     },
-    "timestamp": 1553844225
+    "timestamp": 1553948293
   }
 }

@@ -4,7 +4,15 @@ class StoresController < ApplicationController
   # GET /stores
   # GET /stores.json
   def index
-    @stores = Store.all
+    @stores = Store.alphabetical.paginate(:page => params[:page]).per_page(10)
+  end
+  
+  def active
+    @stores = Store.active.alphabetical.paginate(:page => params[:page]).per_page(10)
+  end
+
+  def inactive
+    @stores = Store.inactive.alphabetical.paginate(:page => params[:page]).per_page(10)
   end
 
   # GET /stores/1

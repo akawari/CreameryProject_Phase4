@@ -8,4 +8,10 @@ Rails.application.routes.draw do
   # Set the root url
   root to: 'stores#index', as: :home
   
+  get 'active' => 'stores#active', as: :active_stores
+  get 'inactive' => 'stores#inactive', as: :inactive_stores
+  
+  get 'active' => 'employees#active', as: :active_employees
+  get 'inactive' => 'employees#inactive', as: :inactive_employees
+  
 end

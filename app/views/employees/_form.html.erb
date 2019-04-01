@@ -11,41 +11,41 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :first_name %>
     <%= form.text_field :first_name %>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :last_name %>
     <%= form.text_field :last_name %>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :ssn %>
     <%= form.text_field :ssn %>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :date_of_birth %>
-    <%= form.date_select :date_of_birth %>
+    <%= form.text_field :date_of_birth, prompt: "Date of Birth", class:"datepicker", :value => (form.object.date_of_birth.strftime('%B %d, %Y') if form.object.date_of_birth != nil) %>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :phone %>
     <%= form.text_field :phone %>
   </div>
 
-  <div class="field">
+  <div class="input-field">
     <%= form.label :role %>
     <%= form.text_field :role %>
   </div>
 
   <div class="field">
-    <%= form.label :active %>
     <%= form.check_box :active %>
+    <%= form.label :active %>
   </div>
-
+<br>
   <div class="actions">
     <%= form.submit %>
   </div>
