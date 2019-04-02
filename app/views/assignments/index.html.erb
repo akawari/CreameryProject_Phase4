@@ -1,10 +1,9 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Assignments</h1>
 
-<table>
+<table class="highlight responsive-table">
   <thead>
     <tr>
+      <th>Assignment ID</th>
       <th>Store</th>
       <th>Employee</th>
       <th>Start date</th>
@@ -17,18 +16,25 @@
   <tbody>
     <% @assignments.each do |assignment| %>
       <tr>
+        <td><%= link_to assignment.id, assignment %></td>
         <td><%= assignment.store_id %></td>
         <td><%= assignment.employee_id %></td>
         <td><%= assignment.start_date %></td>
         <td><%= assignment.end_date %></td>
         <td><%= assignment.pay_level %></td>
-        <td><%= link_to 'Show', assignment %></td>
-        <td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
-        <td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_assignment_path(assignment), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<br>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @assignments, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>
 
 <br>
 

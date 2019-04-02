@@ -10,7 +10,7 @@ class Store < ApplicationRecord
   # make sure required fields are present
   validates_presence_of :name, :street, :zip
   # if state is given, must be one of the choices given (no hacking this field)
-  validates_inclusion_of :state, :in => %w[PA OH WV], message: "is not an option"
+  validates_inclusion_of :state, :in => %w[PA OH WV], message: "is not an option, Please enter PA or OH or WV"
   # if zip included, it must be 5 digits only
   validates_format_of :zip, with: /\A\d{5}\z/, message: "should be five digits long"
   # phone can have dashes, spaces, dots and parens, but must be 10 digits

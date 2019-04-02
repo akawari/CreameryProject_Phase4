@@ -57,6 +57,7 @@
   </div>
 <br>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit :class=>"btn waves-effect waves-light" %>
+    <%= link_to 'Cancel', stores_path, :class => 'waves-effect waves-light btn red' %>
   </div>
 <% end %>

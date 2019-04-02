@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <div id="loader-wrapper">
   <img id="bigmain" src="<%= asset_path('icon.png')%>" >
     <div id="loader">
@@ -59,7 +57,7 @@
   </div>
 
 
-<table>
+<table class="highlight responsive-table">
   <thead>
     <tr>
       <th>Name</th>
@@ -78,7 +76,7 @@
   <tbody>
     <% @stores.each do |store| %>
       <tr>
-        <td><%= store.name %></td>
+        <td><%= link_to store.name, store %></td>
         <td><%= store.street %></td>
         <td><%= store.city %></td>
         <td><%= store.state %></td>
@@ -87,13 +85,19 @@
         <td><%= store.latitude %></td>
         <td><%= store.longitude %></td>
         <td><%= store.active %></td>
-        <td><%= link_to 'Show', store %></td>
-        <td><%= link_to 'Edit', edit_store_path(store) %></td>
-        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_store_path(store), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<br>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @stores, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>
 
 <br>
 

@@ -1,48 +1,59 @@
 require 'test_helper'
 
-class AssignmentsControllerTest < ActionDispatch::IntegrationTest
+class AssignmentsControllerTest < ActionController::TestCase
   setup do
-    @assignment = assignments(:one)
+    create_employees
+    create_stores
+    create_assignments
+  end
+
+  teardown do
+    remove_employees
+    remove_stores
+    remove_assignments
   end
 
   test "should get index" do
-    get assignments_url
+    get :index
     assert_response :success
+    #assert_not_nil assigns(:current_assignments)
+    #assert_not_nil assigns(:past_assignments)
   end
 
   test "should get new" do
-    get new_assignment_url
+    get :new
     assert_response :success
   end
 
-  test "should create assignment" do
+  test "should create a new assignment" do
     assert_difference('Assignment.count') do
-      post assignments_url, params: { assignment: { employee_id: @assignment.employee_id, end_date: @assignment.end_date, pay_level: @assignment.pay_level, start_date: @assignment.start_date, store_id: @assignment.store_id } }
+      post :create, params: {assignment: { employee_id: @ben.id, store_id: @oakland.id, start_date: Date.current, pay_level: 5 }}
     end
-
-    assert_redirected_to assignment_url(Assignment.last)
-  end
-
-  test "should show assignment" do
-    get assignment_url(@assignment)
-    assert_response :success
+    assert_redirected_to assignments_url
+    assert_equal "Assignment Number: 6 was successfully created. Ben Sisko is assigned to Oakland", flash[:notice]
+    post :create, params: {assignment: { employee_id: nil, store_id: @oakland.id, start_date: Date.current, pay_level: 5 }}
+    assert_template :new
   end
 
   test "should get edit" do
-    get edit_assignment_url(@assignment)
+    get :edit, params: {id: @assign_ben}
+    #assert_not_nil assigns(:assignment)
     assert_response :success
   end
 
-  test "should update assignment" do
-    patch assignment_url(@assignment), params: { assignment: { employee_id: @assignment.employee_id, end_date: @assignment.end_date, pay_level: @assignment.pay_level, start_date: @assignment.start_date, store_id: @assignment.store_id } }
-    assert_redirected_to assignment_url(@assignment)
+  test "should update an assignment" do
+    patch :update, params: {id: @promote_ben, assignment: { employee_id: @ben.id, store_id: @cmu.id, start_date: @promote_ben.start_date, pay_level: 5 }}
+    assert_redirected_to assignments_path
+    assert_equal "Assignment Number: 3 was successfully updated. Ben Sisko's assignment is to #{@assignment.store.name}", flash[:notice]
+    patch :update, params: {id: @promote_ben, assignment: { employee_id: nil, store_id: @cmu.id, start_date: @promote_ben.start_date, pay_level: 4 }}
+    assert_template :edit
   end
 
   test "should destroy assignment" do
     assert_difference('Assignment.count', -1) do
-      delete assignment_url(@assignment)
+      delete :destroy, params: {id: @promote_ben}
     end
-
-    assert_redirected_to assignments_url
+    assert_redirected_to assignments_path
+    assert_equal "Assignment Number: 3 was successfully destroyed. Ben Sisko was removed from CMU", flash[:notice]
   end
 end

@@ -4,8 +4,17 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @assignments = Assignment.paginate(:page => params[:page]).per_page(10)
   end
+  
+  def current
+    @current_assignments = Assignment.current.by_employee.paginate(page: params[:page]).per_page(10)
+  end
+  
+  def past
+    @past_assignments = Assignment.past.by_employee.paginate(page: params[:page]).per_page(10) 
+  end
+
 
   # GET /assignments/1
   # GET /assignments/1.json
@@ -28,7 +37,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to @assignment, notice: "Assignment: #{@assignment.name} was successfully created." }
+        format.html { redirect_to @assignment, notice: "Assignment Number: #{@assignment.id} was successfully created. #{@assignment.employee.proper_name} is assigned to #{@assignment.store.name}" }
         format.json { render :show, status: :created, location: @assignment }
       else
         format.html { render :new }
@@ -42,7 +51,7 @@ class AssignmentsController < ApplicationController
   def update
     respond_to do |format|
       if @assignment.update(assignment_params)
-        format.html { redirect_to @assignment, notice: "Assignment: #{@assignment.name} was successfully updated." }
+        format.html { redirect_to @assignment, notice: "Assignment Number: #{@assignment.id} was successfully updated. #{@assignment.employee.proper_name}'s assignment is to #{@assignment.store.name}" }
         format.json { render :show, status: :ok, location: @assignment }
       else
         format.html { render :edit }
@@ -56,7 +65,7 @@ class AssignmentsController < ApplicationController
   def destroy
     @assignment.destroy
     respond_to do |format|
-      format.html { redirect_to assignments_url, notice: "Assignment: #{@assignment.name} was successfully destroyed." }
+      format.html { redirect_to assignments_url, notice: "Assignment Number: #{@assignment.id} was successfully destroyed. #{@assignment.employee.proper_name} was removed from #{@assignment.store.name}" }
       format.json { head :no_content }
     end
   end
