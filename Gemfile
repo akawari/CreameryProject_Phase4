@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+ruby '2.4.0'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.2', '>= 5.2.2.1'
 
@@ -35,18 +37,10 @@ gem 'jquery-rails'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-#Other Gems:
 gem 'validates_timeliness'
 gem 'will_paginate'
 gem 'simple_form'
 gem 'materialize-sass'
-gem 'has_scope'
-gem 'time_date_helpers'
-gem 'cancancan'
-gem 'foundation-rails', '5.5.3.2'
-gem 'font-awesome-sass-rails', '3.0.2.2'
-gem 'geocoder', '1.3.2'
-
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -77,11 +71,8 @@ group :test do
   gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'simplecov'
-end
-
-group :production do
-  #Using postgres gem for pushing to heroku
-  gem 'pg'
+  
+  
 end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
