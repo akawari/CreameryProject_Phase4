@@ -36,9 +36,10 @@
     <%= form.text_field :phone %>
   </div>
 
-  <div class="input-field">
+  <div class="field">
     <%= form.label :role %>
-    <%= form.text_field :role %>
+    <%= form.select :role, [ 'admin', 'manager', 'employee'], :prompt => 'Select One' %>
+
   </div>
 
   <div class="field">

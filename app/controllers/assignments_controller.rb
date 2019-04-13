@@ -1,21 +1,14 @@
 class AssignmentsController < ApplicationController
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
-
+  has_scope :current
+  has_scope :past
+  
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.paginate(:page => params[:page]).per_page(10)
+    @assignments = apply_scopes(Assignment).paginate(:page => params[:page]).per_page(10)
   end
   
-  def current
-    @current_assignments = Assignment.current.by_employee.paginate(page: params[:page]).per_page(10)
-  end
-  
-  def past
-    @past_assignments = Assignment.past.by_employee.paginate(page: params[:page]).per_page(10) 
-  end
-
-
   # GET /assignments/1
   # GET /assignments/1.json
   def show

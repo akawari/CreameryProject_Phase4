@@ -1,20 +1,14 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
+  has_scope :active
+  has_scope :inactive
 
   # GET /employees
   # GET /employees.json
   def index
-    @employees = Employee.alphabetical.paginate(:page => params[:page]).per_page(10)
+    @employees = apply_scopes(Employee).alphabetical.paginate(:page => params[:page]).per_page(10)
   end
   
-  def active
-    @employees = Employee.active.alphabetical.paginate(:page => params[:page]).per_page(10)
-  end
-
-  def inactive
-    @employees = Store.inactive.alphabetical.paginate(:page => params[:page]).per_page(10)
-  end
-
   # GET /employees/1
   # GET /employees/1.json
   def show

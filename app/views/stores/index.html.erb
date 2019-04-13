@@ -1,12 +1,3 @@
-<div id="loader-wrapper">
-  <img id="bigmain" src="<%= asset_path('icon.png')%>" >
-    <div id="loader">
-    </div>
-    <div class="loader-section section-left"></div>
-    <div class="loader-section section-right"></div>
- 
-</div>
-
 <div id="content">
     
 <h1>Stores</h1>
@@ -56,7 +47,12 @@
     
   </div>
 
-
+<div class="col s6">
+<%= link_to 'View All Stores', {controller: 'stores', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Active Stores', {controller: 'stores', action: 'index', :active => true}, :class=>"btn waves-effect waves-light amber"  %>
+<%= link_to 'View Inactive Stores', {controller: 'stores', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn pink'  %>
+</div>
+<br>
 <table class="highlight responsive-table">
   <thead>
     <tr>
@@ -69,7 +65,7 @@
       <th>Latitude</th>
       <th>Longitude</th>
       <th>Active</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -93,6 +89,7 @@
 </table>
 
 <br>
+
 
 <!-- Add the pagination using will_paginate gem -->
 <span class="paginate">

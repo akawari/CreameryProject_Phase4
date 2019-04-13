@@ -1,5 +1,14 @@
 <h1>Employees</h1>
 
+<br>
+
+<div class="col s6">
+<%= link_to 'View All Employees', {controller: 'employees', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Active Employees', {controller: 'employees', action: 'index', :active => true}, :class=>"btn waves-effect waves-light amber"  %>
+<%= link_to 'View Inactive Employees', {controller: 'employees', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn pink'  %>
+</div>
+<br>
+
 <table class="highlight responsive-table">
   <thead>
     <tr>

@@ -6,18 +6,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
   # Set the root url
-  root to: 'stores#index', as: :home
+  root to: 'static#aboutus', as: :home
   
   get "/static/aboutus" => "static#showa"
   get "/static/contactus" => "static#showc"
-  
-  get 'active' => 'stores#active', as: :active_stores
-  get 'inactive' => 'stores#inactive', as: :inactive_stores
-  
-  get 'active' => 'employees#active', as: :active_employees
-  get 'inactive' => 'employees#inactive', as: :inactive_employees
-  
-  get 'past' => "assignments#past", as: :past_assignments
-  get 'current' => "assignments#current", as: :current_assignments
   
 end

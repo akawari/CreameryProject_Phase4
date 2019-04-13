@@ -1,20 +1,15 @@
 class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
+  has_scope :active, :type => :boolean
+  has_scope :inactive, :type => :boolean
+  
 
   # GET /stores
   # GET /stores.json
   def index
-    @stores = Store.alphabetical.paginate(:page => params[:page]).per_page(10)
+    @stores = apply_scopes(Store).alphabetical.paginate(:page => params[:page]).per_page(10)
   end
   
-  def active
-    @stores = Store.active.alphabetical.paginate(:page => params[:page]).per_page(10)
-  end
-
-  def inactive
-    @stores = Store.inactive.alphabetical.paginate(:page => params[:page]).per_page(10)
-  end
-
   # GET /stores/1
   # GET /stores/1.json
   def show

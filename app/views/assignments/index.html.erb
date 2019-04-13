@@ -1,5 +1,15 @@
 <h1>Assignments</h1>
 
+<br>
+
+<div class="col s6">
+<%= link_to 'View All Assignments', {controller: 'assignments', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Current Assignments', {controller: 'assignments', action: 'index', :current => true}, :class=>"btn waves-effect waves-light amber"  %>
+<%= link_to 'View Past Assignments', {controller: 'assignments', action: 'index', :past => true}, :class => 'waves-effect waves-light btn pink'  %>
+</div>
+
+<br>
+
 <table class="highlight responsive-table">
   <thead>
     <tr>
