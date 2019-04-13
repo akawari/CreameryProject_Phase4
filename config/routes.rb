@@ -6,9 +6,10 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
   # Set the root url
-  root to: 'static#aboutus', as: :home
+  root to: 'static#home', as: :home
   
   get "/static/aboutus" => "static#showa"
   get "/static/contactus" => "static#showc"
+  get "/static/privacy" => "static#showp"
   
 end

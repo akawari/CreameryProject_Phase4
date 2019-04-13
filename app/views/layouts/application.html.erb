@@ -2,7 +2,7 @@
 <html>
   <head>
     <link rel="icon" type="image/png" href="<%= asset_path('icon.png')%>">
-    <title>Creamery Web Store :: <%= controller.controller_name.capitalize %> - <%= controller.action_name.capitalize %></title>
+    <title>A &amp; M Creamery Web Store :: <%= controller.controller_name.capitalize %> - <%= controller.action_name.capitalize %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -18,19 +18,23 @@
        <div class="nav-wrapper">
          &nbsp&nbsp
          <a href ="/" ><img src="https://freeiconshop.com/wp-content/uploads/edd/ice-cream-cone-flat.png" class="brand-logo" width="50px" height="50px" style="margin-right: 15px; margin-top: 5px;"></a>
-         <a href="/" data-activates="mobile-demo" class="brand-logo hide-on-med-and-down" style="margin-left: 65px;">Creamery Web Store</a>
+         <a href="/" data-activates="mobile-demo" class="brand-logo hide-on-med-and-down" style="margin-left: 65px;">A &amp; M Creamery Web Store</a>
          <a href ="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-         <!-- Contact Us Infos -->
+         <!-- Infos -->
          <ul class="right hide-on-med-and-down">
            <li><a href="/"><i class="material-icons right">home</i> Home Page</a> </li>
            <li><a href="/static/aboutus"><i class="material-icons right">account_box</i> About Us</a> </li>
            <li><a href="/static/contactus"><i class="material-icons right">phone</i> Contact Us</a> </li>
+           <li><a href="/static/privacy"><i class="material-icons right">lock</i> Privacy Policy</a> </li>
+           <li><a href="#"><i class="material-icons right">launch</i> Login</a> </li>
          </ul>
-         <!-- Contact Us Infos Mobile Version -->
+         <!-- Infos Mobile Version -->
          <ul id="mobile-demo" class="side-nav">
            <li><a href="/"><i class="material-icons right">home</i> Home Page</a> </li>
-           <li><a href="#"><i class="material-icons right">account_box</i> About Us</a> </li>
-           <li><a href="#"><i class="material-icons right">phone</i> Contact Us</a> </li>
+           <li><a href="/static/aboutus"><i class="material-icons right">account_box</i> About Us</a> </li>
+           <li><a href="/static/contactus"><i class="material-icons right">phone</i> Contact Us</a> </li>
+           <li><a href="/static/privacy"><i class="material-icons right">lock</i> Privacy Policy</a> </li>
+           <li><a href="#"><i class="material-icons right">launch</i> Login</a> </li>
          </ul>
         </div>
       </nav>
