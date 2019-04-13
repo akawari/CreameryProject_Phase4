@@ -35,6 +35,7 @@ gem 'jquery-rails'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+#Other Gems
 gem 'validates_timeliness'
 gem 'will_paginate'
 gem 'simple_form'
@@ -42,6 +43,7 @@ gem 'materialize-sass'
 gem 'time_date_helpers'
 gem 'cancancan'
 gem 'geocoder', '1.3.2'
+gem 'has_scope'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
