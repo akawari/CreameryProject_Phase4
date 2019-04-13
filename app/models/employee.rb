@@ -6,6 +6,10 @@ class Employee < ApplicationRecord
   # Relationships
   has_many :assignments
   has_many :stores, through: :assignments
+  has_one :user
+  
+  #Nested Attribute
+  accepts_nested_attributes_for :user
   
   # Validations
   validates_presence_of :first_name, :last_name, :date_of_birth, :ssn, :role
@@ -24,6 +28,7 @@ class Employee < ApplicationRecord
   scope :managers,        -> { where(role: 'manager') }
   scope :admins,          -> { where(role: 'admin') }
   scope :alphabetical,    -> { order('last_name, first_name') }
+  
   
   # Other methods
   def name
