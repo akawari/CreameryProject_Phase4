@@ -9,7 +9,7 @@ class Employee < ApplicationRecord
   has_one :user
   
   #Nested Attribute
-  accepts_nested_attributes_for :user
+  accepts_nested_attributes_for :user, :allow_destroy => true, :reject_if => lambda { |a| a[:password].blank? }
   
   # Validations
   validates_presence_of :first_name, :last_name, :date_of_birth, :ssn, :role
