@@ -1,18 +1,2 @@
-<% unless logged_in? %>
-           <%= render partial: 'partials/quick_links_guest' %>
-       <% else %>
-          <% if current_user.employee.role == "admin" %>
-           <%= render partial: 'partials/quick_links_admin' %>
-       
-          <% elsif current_user.employee.role == "manager" %>
-           
-            <%= render partial: 'partials/quick_links_manager' %>
-       
-        <% elsif current_user.employee.role == "employee" %>
-            <%= render partial: 'partials/quick_links_employee' %>
-        <% else %>
-            <%= render partial: 'partials/quick_links_guest' %>
-        <% end %>
 
-         
-    <% end %>
+           <%= render partial: 'partials/quick_links_admin' %>
