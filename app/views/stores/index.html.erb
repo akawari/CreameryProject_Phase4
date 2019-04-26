@@ -46,13 +46,21 @@
     </div>
     
   </div>
+  
+<hr>
 
 <div class="col s6">
+<h5><u>Table Functions</u></h5>
+<br>
 <%= link_to 'View All Stores', {controller: 'stores', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
-<%= link_to 'View Active Stores', {controller: 'stores', action: 'index', :active => true}, :class=>"btn waves-effect waves-light amber"  %>
-<%= link_to 'View Inactive Stores', {controller: 'stores', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn pink'  %>
+<%= link_to 'View Active Stores', {controller: 'stores', action: 'index', :active => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'View Inactive Stores', {controller: 'stores', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn amber'  %>
+<%= link_to 'Sort By Alphabetical', {controller: 'stores', action: 'index', :alphabetical => true}, :class => 'waves-effect waves-light btn grey'  %>
 </div>
 <br>
+<hr>
+<br>
+<% unless @stores.empty? %>
 <table class="highlight responsive-table">
   <thead>
     <tr>
@@ -91,6 +99,10 @@
 </table>
 
 <br>
+
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
 
 
 <!-- Add the pagination using will_paginate gem -->

@@ -2,6 +2,9 @@ class AssignmentsController < ApplicationController
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
   has_scope :current
   has_scope :past
+  has_scope :chronological
+  has_scope :by_employee
+  has_scope :by_store
   
   # GET /assignments
   # GET /assignments.json

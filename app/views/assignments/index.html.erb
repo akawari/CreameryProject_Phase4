@@ -2,7 +2,11 @@
 
 <br>
 
+<hr>
+
 <div class="col s6">
+<h5><u>Table Functions</u></h5>
+<br>
 <%= link_to 'View All Assignments', {controller: 'assignments', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
 <%= link_to 'View Current Assignments', {controller: 'assignments', action: 'index', :current => true}, :class=>"btn waves-effect waves-light amber"  %>
 <%= link_to 'View Past Assignments', {controller: 'assignments', action: 'index', :past => true}, :class => 'waves-effect waves-light btn pink'  %>
@@ -10,6 +14,15 @@
 
 <br>
 
+<div class="col s6">
+<%= link_to 'Sort By Chronological', {controller: 'assignments', action: 'index', :chronological => true}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'Sort By Stores', {controller: 'assignments', action: 'index', :by_store => true}, :class=>"btn waves-effect waves-light amber"  %>
+<%= link_to 'Sort By Employees', {controller: 'assignments', action: 'index', :by_employee => true}, :class => 'waves-effect waves-light btn pink'  %>
+</div>
+<br>
+<hr>
+
+<% unless @assignments.empty? %>
 <table class="highlight responsive-table">
   <thead>
     <tr>
@@ -40,6 +53,10 @@
 </table>
 
 <br>
+
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
 
 <!-- Add the pagination using will_paginate gem -->
 <span class="paginate">

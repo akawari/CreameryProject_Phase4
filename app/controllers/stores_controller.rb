@@ -2,7 +2,7 @@ class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   has_scope :active, :type => :boolean
   has_scope :inactive, :type => :boolean
-  
+  has_scope :alphabetical
 
   # GET /stores
   # GET /stores.json
