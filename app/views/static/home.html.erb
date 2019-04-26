@@ -1,7 +1,15 @@
 <div id="loader-wrapper">
   <img id="bigmain" src="<%= asset_path('icon.png')%>" >
-    <div id="loader">
-    </div>
+      <div id="welcome">
+        <%  if logged_in? %>
+          <h4>Welcome <%= current_user.employee.first_name %> to A & M Creamery System </h4> 
+          <h5>You are logged in as (<%= current_user.employee.role.capitalize %>) Loading Profile.... </h5>
+          <h5></h5>
+        <% end %>
+      </div>
+      
+      <div id="loader">
+      </div>
     <div class="loader-section section-left"></div>
     <div class="loader-section section-right"></div>
  

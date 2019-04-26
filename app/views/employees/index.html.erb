@@ -1,23 +1,51 @@
 <h1>Employees</h1>
 
+
+<hr>
 <br>
 
 <div class="col s6">
 <%= link_to 'View All Employees', {controller: 'employees', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
-<%= link_to 'View Active Employees', {controller: 'employees', action: 'index', :active => true}, :class=>"btn waves-effect waves-light amber"  %>
-<%= link_to 'View Inactive Employees', {controller: 'employees', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn pink'  %>
+<%= link_to 'View Active Employees', {controller: 'employees', action: 'index', :active => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'View Inactive Employees', {controller: 'employees', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn amber'  %>
 </div>
+
+<br> 
+
+<div class="col s6">
+<%= link_to 'Sort By Alphabetical', {controller: 'employees', action: 'index', :alphabetical => true}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'Sort By Age 18 and Older', {controller: 'employees', action: 'index', :is_18_or_older => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'Sort By Age 18 and Yonger', {controller: 'employees', action: 'index', :younger_than_18 => true}, :class=>"btn waves-effect waves-light amber"  %>
+</div>
+
 <br>
+
+<div class="col s6">
+<%= link_to 'Sort By Admin Employees', {controller: 'employees', action: 'index', :admins => true}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'Sort By Manager Employees', {controller: 'employees', action: 'index', :managers => true}, :class => 'waves-effect waves-light btn pink'  %>
+<%= link_to 'Sort By Regular Employees', {controller: 'employees', action: 'index', :regulars => true}, :class => 'waves-effect waves-light btn amber'  %>
+</div>
+
+<br>
+
+<hr>
+
+<% unless @employees.empty? %>
 
 <table class="highlight responsive-table">
   <thead>
     <tr>
+      <% if current_user.employee.role == "admin" %>
+      <th>Employee ID</th>
+      <% end %>
       <th>First name</th>
       <th>Last name</th>
       <th>SSN</th>
       <th>Date of birth</th>
       <th>Phone</th>
       <th>Role</th>
+      <th>Current Assignment</th>
+      <th>Email</th>
       <th>Active</th>
       <th colspan="3"></th>
     </tr>
@@ -26,21 +54,40 @@
   <tbody>
     <% @employees.each do |employee| %>
       <tr>
-        <td><%= link_to employee.first_name, employee %></td>
+        <% if current_user.employee.role == "admin" %>
+        <td><%= link_to employee.id, employee %></td>
+        <% end %>
+        <td><%= employee.first_name %></td>
         <td><%= employee.last_name %></td>
         <td><%= employee.ssn %></td>
         <td><%= employee.date_of_birth %></td>
         <td><%= employee.phone %></td>
         <td><%= employee.role %></td>
+        <td>
+          <% unless employee.assignment_ids.empty? %>
+          <% employee.assignment_ids.each do |assignment| %>
+            <%= link_to assignment, assignment_path(assignment) %> &comma;
+            <% end %>
+          <% else %>
+            <strong><font color="red">No Assignment</font></strong>
+          
+          <% end %>
+        </td>
+        <td><%= employee.user.email %></td>
         <td><%= employee.active %></td>
         <td><%= link_to 'Edit', edit_employee_path(employee), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <% if current_user.employee.role == "admin" %>
         <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
 
 <!-- Add the pagination using will_paginate gem -->
 <span class="paginate">

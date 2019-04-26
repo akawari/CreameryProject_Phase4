@@ -2,11 +2,19 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :edit, :update, :destroy]
   has_scope :active
   has_scope :inactive
+  has_scope :alphabetical
+  has_scope :admins
+  has_scope :managers
+  has_scope :regulars
+  has_scope :younger_than_18
+  has_scope :is_18_or_older
 
   # GET /employees
   # GET /employees.json
   def index
     @employees = apply_scopes(Employee).alphabetical.paginate(:page => params[:page]).per_page(10)
+    @employee_ids = @employees.map(&:id)
+    @users = User.where(:employee_id => @employee_ids)
   end
   
   # GET /employees/1

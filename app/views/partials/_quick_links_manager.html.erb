@@ -1,0 +1,53 @@
+<!-- Add Function -->
+    <div class="fixed-action-btn horizontal" style = "padding-bottom:800px;"> 
+        <a href="#" class="btn-floating light-blue btn-large"><i class="large material-icons">add</i></a>
+          <ul class="listings" style = "padding-bottom:885px;">
+            <!-- Add New Shift -->
+            <li>
+                <a href="/shifts/new" class="btn-floating light-blue btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="Add New Shift"><i class="material-icons">autorenew</i></a>
+            </li>
+          </ul>
+    </div>
+
+<!-- View Function -->
+    <div class="fixed-action-btn horizontal" style = "padding-bottom:725px;">
+          <a href="#" class="btn-floating pink lighten-1 btn-large"><i class="large material-icons">import_contacts</i></a>
+          <ul class="listings" style = "padding-bottom:810px;">
+            <!-- Show and Edit All Employees -->
+            <li>
+                <a href="/employees" class="btn-floating light-blue btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View and Edit Employees" ><i class="material-icons">person</i></a>
+            </li>
+            <!-- Show Shifts -->
+            <li>
+                <a href="/shifts" class="btn-floating pink lighten-1 btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View and Edit Shifts"><i class="material-icons">autorenew</i></a>
+            </li>
+          </ul>
+    </div>
+    
+<!-- Settings Function -->
+    <div class="fixed-action-btn horizontal" style = "padding-bottom:650px;">
+          <a href="#" class="btn-floating amber btn-large"><i class="large material-icons">settings</i></a>
+          <ul class="listings" style = "padding-bottom:735px;">
+            <!-- View Current_User Employee Detail -->
+            <li>
+                <a href="<%= employee_path(current_user.employee.id) %>" class= "btn-floating light-blue btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Details"><i class="material-icons">account_circle</i></a>
+            </li>
+            <!-- View Current_User Shift Detail -->
+            <li>
+                <a href="<%= employee_path(current_user.employee.id) %>" class= "btn-floating pink lighten-1 btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Shift Details"><i class="material-icons">autorenew</i></a>
+            </li>
+            <!-- View Current_User Job Detail -->
+            <li>
+                <a href="<%= employee_path(current_user.employee.id) %>" class= "btn-floating amber btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Job Details"><i class="material-icons">work</i></a>
+            </li>
+            <!-- Change Flavor at Store -->
+            <li>
+                <a href="#" class= "btn-floating green lighten-1 btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="Change Flavor at Store"><i class="material-icons">format_color_fill</i></a>
+            </li>
+            <!-- Reset Password-->
+            <li>
+                <a href="#" class= "btn-floating purple btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Password"><i class="material-icons">vpn_key</i></a>
+            </li>
+          </ul>
+    </div>
+    

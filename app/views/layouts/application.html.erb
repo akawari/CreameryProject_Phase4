@@ -26,7 +26,11 @@
            <li><a href="/static/aboutus"><i class="material-icons right">account_box</i> About Us</a> </li>
            <li><a href="/static/contactus"><i class="material-icons right">phone</i> Contact Us</a> </li>
            <li><a href="/static/privacy"><i class="material-icons right">lock</i> Privacy Policy</a> </li>
-           <li><a href="#"><i class="material-icons right">launch</i> Login</a> </li>
+           <% if logged_in? %>
+           <li><a href="/sessions/destroy"><i class="material-icons right">launch</i> Logout</a> </li>
+           <% else %>
+           <li><a href="/sessions/new"><i class="material-icons right">launch</i> Login</a> </li>
+           <% end %>
          </ul>
          <!-- Infos Mobile Version -->
          <ul id="mobile-demo" class="side-nav">
@@ -34,7 +38,11 @@
            <li><a href="/static/aboutus"><i class="material-icons right">account_box</i> About Us</a> </li>
            <li><a href="/static/contactus"><i class="material-icons right">phone</i> Contact Us</a> </li>
            <li><a href="/static/privacy"><i class="material-icons right">lock</i> Privacy Policy</a> </li>
-           <li><a href="#"><i class="material-icons right">launch</i> Login</a> </li>
+           <% if logged_in? %>
+           <li><a href="/sessions/destroy"><i class="material-icons right">launch</i> Logout</a> </li>
+           <% else %>
+           <li><a href="/sessions/new"><i class="material-icons right">launch</i> Login</a> </li>
+           <% end %>
          </ul>
         </div>
       </nav>
@@ -44,9 +52,10 @@
        <!-- MAIN CONTENT GOES HERE -->
        <%= yield %>
        </div>
-       
        <!-- SIDEBAR CONTENT GOES HERE -->
-       <%= render partial: 'partials/quick_links' %>
+       
+          <%= render partial: 'partials/quick_links' %>
+
       </div>
       </div>
   

@@ -40,6 +40,14 @@ right: auto !important;
     margin: -75px 0 0 -75px;
     z-index: 1001; /* anything higher than z-index: 1000 of .loader-section */
 }
+
+#welcome {
+    display: block;
+    position: relative;
+    top: 10%;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    z-index: 1001; /* anything higher than z-index: 1000 of .loader-section */
+}
  
 #loader:before {
     content: "";
