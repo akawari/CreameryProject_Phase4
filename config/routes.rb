@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :store_flavors
+  resources :shift_jobs
+  resources :flavors
+  resources :jobs
+  resources :shifts
   # Generated model routes for each Employees, Stores and Assignments
   resources :employees
   resources :assignments
