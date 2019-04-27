@@ -2,11 +2,17 @@ class Employee < ApplicationRecord
  # Callbacks
   before_save :reformat_phone
   before_validation :reformat_ssn
+  before_destroy :is_destroyable?
+  after_destroy :clean_up_assignment_and_shifts
+  after_rollback :terminate_employee
+
+  attr_reader :destroyable
   
   # Relationships
   has_many :assignments
   has_many :stores, through: :assignments
-  has_one :user
+  has_one :user, dependent: :destroy
+  has_many :shifts, through: :assignments
   
   #Nested Attribute
   accepts_nested_attributes_for :user, allow_destroy: true, reject_if: lambda { |a| a[:password].blank? }
@@ -28,6 +34,7 @@ class Employee < ApplicationRecord
   scope :managers,        -> { where(role: 'manager') }
   scope :admins,          -> { where(role: 'admin') }
   scope :alphabetical,    -> { order('last_name, first_name') }
+  scope :for_store,       -> (store_id) { joins(:assignments).where("store_id = ? AND end_date IS NULL", store_id) }
   
   
   # Other methods
@@ -72,5 +79,37 @@ class Employee < ApplicationRecord
      ssn.gsub!(/[^0-9]/,"")   # strip all non-digits
      self.ssn = ssn           # reset self.ssn to new string
    end
+   
+  def is_destroyable?
+    @destroyable = self.shifts.past.empty?
+  end
+
+  def remove_upcoming_shifts
+    @future_shifts = self.shifts.upcoming
+    @future_shifts.each {|s| s.destroy} unless @future_shifts.empty?
+  end
+
+  def clean_up_assignment_and_shifts
+    if @destroyable
+      remove_upcoming_shifts
+      self.current_assignment.delete unless self.current_assignment.nil?
+    end
+    @destroyable = nil
+  end
+
+  def end_current_assignment
+    current_assignment = self.current_assignment    
+    unless current_assignment.nil?
+      current_assignment.update_attribute(:end_date, Date.current)
+    end
+  end
+
+  def terminate_employee
+    if !@destroyable.nil? && @destroyable == false
+      remove_upcoming_shifts
+      end_current_assignment
+    end
+    @destroyable = nil
+  end
 end
 
