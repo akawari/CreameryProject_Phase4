@@ -4,9 +4,9 @@ class StoreTest < ActiveSupport::TestCase
   # Test relationships
   should have_many(:assignments)
   should have_many(:employees).through(:assignments)
-  should have_many(:shifts).through(:assignments)
   should have_many(:store_flavors)
   should have_many(:flavors).through(:store_flavors)
+  should have_many(:shifts).through(:assignments)
 
   # # Test basic validations
   should validate_presence_of(:name)
@@ -88,15 +88,10 @@ class StoreTest < ActiveSupport::TestCase
     end
     
     #New Testings:
-    should "correctly assess that stores are not destroyable" do
-      deny @cmu.destroy
-      deny @hazelwood.destroy
-    end
-
-    should "make an undestroyed store inactive" do
-      deny @cmu.destroy
-      @cmu.reload
-      deny @cmu.active
+    should "Show that stores are never deleted, only made inactive" do
+      @cmu.destroy
+      assert_equal 2, Store.inactive.size
+      assert_equal ["CMU", "Hazelwood"], Store.inactive.map{|i| i.name}.sort
     end
   
   end

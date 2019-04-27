@@ -1,15 +1,15 @@
 class Store < ApplicationRecord
 # Callbacks
   before_save :reformat_phone
-  before_destroy :is_destroyable?
-  after_rollback :convert_to_inactive
+  before_destroy :cancel_destroy
+  after_rollback :make_inactive
   
   # Relationships
   has_many :assignments
-  has_many :employees, through: :assignments
-  has_many :shifts, through: :assignments
+  has_many :employees, through: :assignments  
   has_many :store_flavors
   has_many :flavors, through: :store_flavors
+  has_many :shifts, through: :assignments
   
   # Validations
   # make sure required fields are present
@@ -27,8 +27,6 @@ class Store < ApplicationRecord
   scope :alphabetical, -> { order('name') }
   scope :active,       -> { where(active: true) }
   scope :inactive,     -> { where(active: false) }
-  scope :for_store,    ->(store_id) { where("id = ?", store_id) }
-  
   
   # Misc Constants
   STATES_LIST = [['Ohio', 'OH'],['Pennsylvania', 'PA'],['West Virginia', 'WV']]
@@ -44,18 +42,15 @@ class Store < ApplicationRecord
     self.phone = phone       # reset self.phone to new string
   end
   
-  def is_destroyable?
-    @destroyable = false
-  end
+  #New Required Methods
   
-  def convert_to_inactive
-    make_inactive if !@destroyable.nil? && @destroyable == false
-    @destroyable = nil
+  def cancel_destroy
+    return false
   end
 
   def make_inactive
-    self.update_attribute(:active, false)
+    self.active = 0
+    self.save
   end
-
 end
 

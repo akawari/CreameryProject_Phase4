@@ -163,50 +163,14 @@ class EmployeeTest < ActiveSupport::TestCase
     
     #New Testings:
     
-    # test that a model knows which employees are destroyable
-    should "recognize when an employee is destroyable" do 
-      create_stores
-      create_assignments
-      create_shifts
-      deny @kathryn.destroy,"#{@kathryn.shifts.upcoming.count}"
-      assert @cindy.destroy
-      remove_stores
-      remove_assignments
-      remove_shifts
+    should "show that an employee is only deleted if he works no shifts" do
+       @cmu = FactoryBot.create(:store)
+       @ben_assign = FactoryBot.create(:assignment, employee: @ben, store: @cmu, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 4)
+       @ben.destroy
+       assert @ben.destroyed?
+       assert @ben_assign.destroyed?
+       @cmu.destroy
     end
-
-    # employee w/ past shifts is properly terminated
-    should "properly handle case of employee with past shifts" do 
-      create_stores
-      create_assignments
-      create_shifts
-      kathryn_id = @kathryn.id
-      deny Assignment.current.for_employee(kathryn_id).empty?
-      deny Shift.past.for_employee(kathryn_id).empty?
-      deny Shift.upcoming.for_employee(kathryn_id).empty?
-      deny @kathryn.destroy
-      assert_equal Date.current, @kathryn.assignments.chronological.first.end_date
-      assert Shift.upcoming.for_employee(kathryn_id).empty?
-      remove_stores
-      remove_assignments
-      remove_shifts
-    end
-
-    # employee w/o past shifts is properly terminated
-    should "properly handle case of employee with no past shifts" do 
-      create_stores
-      create_assignments
-      create_upcoming_shifts
-      cindy_id = @cindy.id
-      deny Assignment.current.for_employee(cindy_id).empty?
-      deny Shift.upcoming.for_employee(cindy_id).empty?
-      assert @cindy.destroy
-      deny Employee.exists?(cindy_id)
-      assert Assignment.current.for_employee(cindy_id).empty?
-      assert Shift.upcoming.for_employee(cindy_id).empty?
-      remove_stores
-      remove_assignments
-      remove_upcoming_shifts
-    end
+    
   end
 end

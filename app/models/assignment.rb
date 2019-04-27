@@ -1,9 +1,8 @@
 class Assignment < ApplicationRecord
-  include CreameryHelpers::Validations
-# Callbacks
+  # Callbacks
   before_create :end_previous_assignment
-  before_update :remove_future_shifts_from_terminated_assignment
-  before_destroy :is_destroyable?
+  before_destroy :check_for_shifts, :destroy_future_shifts
+  after_update :destroy_future_shifts
   after_rollback :terminate_assignment
   
   # Relationships
@@ -33,13 +32,26 @@ class Assignment < ApplicationRecord
 
   # Private methods for callbacks and custom validations
   private  
+  #New Methods:
+  def destroy_future_shifts
+    self.shifts.upcoming.each do |shift|
+      shift.delete
+    end
+  end
+
+  def check_for_shifts
+    return false unless self.shifts.past.size == 0
+  end
+
+  def terminate_assignment
+    self.update_attribute(:end_date, self.start_date.to_date) unless self.destroyed?
+  end
   
   def end_previous_assignment
     current_assignment = Employee.find(self.employee_id).current_assignment
     if current_assignment.nil?
       return true 
     else
-      terminate_all_future_shifts
       current_assignment.update_attribute(:end_date, self.start_date.to_date)
     end
   end
@@ -57,25 +69,6 @@ class Assignment < ApplicationRecord
     unless all_active_stores.include?(self.store_id)
       errors.add(:store_id, "is not an active store at the creamery")
     end
-  end
-  
-  def remove_future_shifts_from_terminated_assignment
-    terminate_all_future_shifts unless self.end_date.nil?
-  end
-
-  def terminate_all_future_shifts
-    @future_shifts = self.shifts.upcoming
-    @future_shifts.each {|s| s.destroy}
-  end
-
-  def is_destroyable?
-    @destroyable = self.shifts.past.empty?
-  end
-  
-  def terminate_assignment
-    terminate_all_future_shifts if !@destroyable.nil? && @destroyable == false
-    self.update_attribute(:end_date, Date.current)if !@destroyable.nil? && @destroyable == false
-    @destroyable = nil
   end
 end
 

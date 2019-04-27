@@ -122,44 +122,22 @@ class AssignmentTest < ActiveSupport::TestCase
     end
     
     #New Testings:
-    should "allow an assignment with no past shifts to be destroyed" do 
-      create_upcoming_shifts
-      assert @assign_cindy.shifts.past.empty?
-      assert @assign_cindy.destroy
-      remove_upcoming_shifts
+    
+    should "end upcoming shifts when assignment is terminated" do
+      @future_shift = FactoryBot.create(:shift, assignment:@promote_ben, date: Date.tomorrow)
+      @third_ben = FactoryBot.create(:assignment, employee: @ben, store: @cmu, start_date: Date.current, end_date: nil, pay_level: 5)
+      assert_equal false, Shift.exists?(@future_shift.id)
+      @third_ben.destroy
+      @future_shift.destroy 
     end
 
-    should "allow a destroyable assignment has upcoming shifts removed" do 
-      create_upcoming_shifts
-      deny Shift.for_employee(@cindy.id).empty?
-      assert @assign_cindy.destroy
-      assert Shift.for_employee(@cindy.id).empty?
-      remove_upcoming_shifts  
-    end
-
-    should "not allow an assignment with past shifts to be destroyed" do 
-      create_past_shifts
-      deny @assign_ed_2.shifts.past.empty?
-      deny @assign_ed_2.destroy
-      remove_past_shifts
-    end
-
-    should "remove upcoming shifts from an assignment that was attempted to be destroyed" do 
-      create_shifts
-      deny Shift.for_employee(@kathryn.id).upcoming.empty?
-      deny @assign_kathryn.destroy
-      assert Shift.for_employee(@kathryn.id).upcoming.empty?
-      remove_shifts  
-    end
-
-    should "remove upcoming shifts from an assignment that was ended" do 
-      create_shifts
-      deny @assign_kathryn.shifts.upcoming.empty?
-      @assign_kathryn.end_date = Date.current
-      @assign_kathryn.save
-      @assign_kathryn.reload
-      assert @assign_kathryn.shifts.upcoming.empty?
-      remove_shifts      
+    should "terminate an assignment instead of destroying it if shifts have been worked" do
+      @past_shift = FactoryBot.create(:shift, assignment_id: 4)
+      @past_shift.update_attribute(:date, Date.current-5)
+      @assign_cindy.destroy
+      assert !@assign_cindy.destroyed?
+      assert_equal 1, Assignment.past.for_employee(@cindy.id).size
+      @past_shift.destroy
     end
   end
 end

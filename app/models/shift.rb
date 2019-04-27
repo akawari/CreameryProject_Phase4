@@ -1,5 +1,9 @@
 class Shift < ApplicationRecord
-    # Relationships
+  #Callbacks
+  before_destroy :can_be_destroyed?
+  after_create :set_end_time
+  
+  # Relationships
   has_many :shift_jobs
   has_many :jobs, through: :shift_jobs
   belongs_to :assignment
@@ -7,66 +11,52 @@ class Shift < ApplicationRecord
   has_one :store, through: :assignment
 
   # Validations
-  validates_date :date, on_or_after: lambda { :assignment_starts }, on_or_before_message: "must be on or after the start of the assignment"
-  validates_time :start_time
-  validates_time :end_time, after: :start_time, allow_blank: true
-  validate :assignment_must_be_current
+  validates_presence_of :date, :start_time, :assignment_id
+  validates_time :end_time, :after => :start_time, :after_message => 'must be after start_time', allow_blank: true
+  validates_date :date, :on_or_after => Date.current, on: :create
+  validate :assignment_is_active_in_system, on: :create
 
   # Scopes
-  scope :chronological, -> { order(:date, :start_time) }
-  scope :by_store, -> { joins(:assignment, :store).order('stores.name') }
-  scope :by_employee, -> { joins(:assignment, :employee).order('employees.last_name, employees.first_name') }
-  scope :past, -> { where('date < ?', Date.current) }
-  scope :upcoming, -> { where('date >= ?', Date.current) }
-  scope :for_employee, ->(employee_id) { joins(:assignment, :employee).where("assignments.employee_id = ?", employee_id) }
-  scope :for_store, ->(store_id) { joins(:assignment, :store).where("assignments.store_id = ?", store_id) }
-  scope :for_next_days, ->(x) { where('date BETWEEN ? AND ?', Date.today, x.days.from_now.to_date) }
-  scope :for_past_days, ->(x) { where('date BETWEEN ? AND ?', x.days.ago.to_date, 1.day.ago.to_date) }
-  scope :completed, -> { joins(:shift_jobs).group(:shift_id) }
-  scope :incomplete, -> { joins("LEFT JOIN shift_jobs ON shifts.id = shift_jobs.shift_id").where('shift_jobs.job_id IS NULL') }
-  scope :most_recent, -> { order("id DESC")}
+  scope :completed,     -> { joins(:shift_jobs) }
+  scope :incompleted,   -> { joins("LEFT JOIN shift_jobs ON shift_id")}
+  scope :for_store,     -> (store_id) { joins(:assignment).where("store_id = ?", store_id) }
+  scope :for_employee,  -> (employee_id) { joins(:assignment).where("employee_id = ?", employee_id) }
+  scope :past,          -> { where("date < ?", Date.current) }
+  scope :upcoming,      -> { where("date >= ?", Date.current) }
+  scope :for_next_days, -> (next_days) { where("date between ? and ?", Date.current, Date.current + next_days) }
+  scope :for_past_days, -> (past_days) { where("date between ? and ?", Date.current - past_days, Date.current - 1) }
+  scope :chronological, -> { order('date ASC') }
+  scope :by_store,      -> { joins(:store).order("stores.name") }
+  scope :by_employee,   -> { joins(:employee).order("employees.last_name, employees.first_name") }
   
-  def self.not_completed
-    all_shifts = Shift.all
-    completed_shifts = Shift.completed
-    incompleted_shifts = all_shifts - completed_shifts
-  end
-
-  # Other methods
+  #Required New Methods:
   def completed?
-    self.shift_jobs.count > 0
+    self.shift_jobs.to_a.size != 0
   end
 
   def start_now
-    self.update_attribute(:start_time, Time.current)
+  	self.update_attribute(:start_time, Time.now)
   end
 
   def end_now
-    self.update_attribute(:end_time, Time.current)
+    self.update_attribute(:end_time, Time.now)
   end
 
-  def duration
-    # returns the duration of the shift in units of hours (fractional)
-    # since creamery not opened past midnight, don't have to
-    # worry about crossing into next day, so just ...
-    (self.end_time - self.start_time)/3600.0
-  end
-  
-  # callback to set default end_time (on create only)
-  before_create :set_shift_end_time
-  
   private
-  def assignment_starts
-    @assignment_starts = self.assignment.start_date.to_date
-  end
-  
-  def assignment_must_be_current
-    unless self.assignment.nil? || self.assignment.end_date.nil?
-      errors.add(:assignment_id, "is not a current assignment at the creamery")
+  #New Methods
+  def assignment_is_active_in_system
+  	all_active_assignments = Assignment.current.map{|i| i.id}
+    unless all_active_assignments.include?(self.assignment_id)
+      errors.add(:assignment_id, "is not an active assignment at the creamery")
     end
   end
-  
-  def set_shift_end_time
-    self.end_time = self.start_time + (3*60*60)
+
+  def can_be_destroyed?
+    return false unless self.date >= Date.current
+  end
+
+  def set_end_time
+    self.end_time ||= self.start_time + 3.hours
+    self.save
   end
 end

@@ -20,51 +20,38 @@ class JobTest < ActiveSupport::TestCase
     
     #Should Testing
     
-    # test the scope 'alphabetical'
-    should "shows that there are four jobs in in alphabetical order" do
-      assert_equal ["Cashier", "Ice cream making", "Mopping", "Mover"], Job.alphabetical.map{|j| j.name}
+    should "Show that there is one active job" do
+      assert_equal 1, Job.active.size
+      assert_equal ["Cashier"], Job.active.map{|i| i.name}.sort
     end
-    
-    # test the scope 'active'
-    should "shows that there are three active jobs" do
-      assert_equal 3, Job.active.size
-      assert_equal ["Cashier", "Ice cream making", "Mopping"], Job.active.map{|j| j.name}.sort
-    end
-    
-    # test the scope 'inactive'
-    should "shows that there is one inactive job" do
+
+    should "Show that there is one inactive job" do
       assert_equal 1, Job.inactive.size
-      assert_equal ["Mover"], Job.inactive.map{|j| j.name}.sort
+      assert_equal ["Mopper"], Job.inactive.map{|i| i.name}.sort
     end
 
-    should "correctly assess when a job is destroyable" do
-      create_employees
-      create_stores
-      create_assignments
-      create_shifts
-      create_shift_jobs
-      assert @making.destroy
-      remove_shift_jobs
-      remove_employees
-      remove_stores
-      remove_assignments
-      remove_shifts
+    should "List the positions in alphabetical order" do
+      assert_equal 2, Job.alphabetical.size
+      assert_equal ["Cashier", "Mopper"], Job.alphabetical.map{|i| i.name}.sort
     end
 
-    should "make an undestroyable job inactive" do
-      create_employees
-      create_stores
-      create_assignments
-      create_shifts
-      create_shift_jobs
-      deny @cashier.destroy
-      @cashier.reload
-      deny @cashier.active
-      remove_shift_jobs
-      remove_employees
-      remove_stores
-      remove_assignments
-      remove_shifts
+    should "Show that job can only be deleted if the job has 
+      never been worked by an employee; otherwise it is made inactive" do
+      @cmu = FactoryBot.create(:store)
+      @ben = FactoryBot.create(:employee, first_name: "Ben", last_name: "Sisko", role: "manager", phone: "412-268-2323")
+      @ben_ass = FactoryBot.create(:assignment, employee: @ben, store: @cmu, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 4)
+      @shift_ben = FactoryBot.create(:shift)
+      @shift_job_cash = FactoryBot.create(:shift_job, job_id: 2)
+
+      @cashier.destroy
+      assert_equal 2, Job.inactive.size
+      assert_equal ["Cashier", "Mopper"], Job.inactive.map{|i| i.name}.sort
+      
+      @shift_job_cash.destroy
+      @shift_ben.destroy
+      @ben_ass.destroy
+      @ben.destroy
+      @cmu.destroy
     end
   end
 end

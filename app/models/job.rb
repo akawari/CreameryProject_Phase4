@@ -1,7 +1,7 @@
 class Job < ApplicationRecord
   #Callbacks
-  before_destroy :is_destroyable?
-  after_rollback :convert_to_inactive
+  before_destroy :check_association
+  after_rollback :make_inactive
   
   #Relationships
   has_many :shift_jobs
@@ -16,16 +16,13 @@ class Job < ApplicationRecord
   scope :alphabetical, -> { order(:name) }
 
   private
-  def is_destroyable?
-    @destroyable = self.shift_jobs.empty?
-  end
-  
-  def convert_to_inactive
-    make_inactive if !@destroyable.nil? && @destroyable == false
-    @destroyable = nil
+  #New Methods
+  def make_inactive
+  	self.active = 0 unless self.destroyed?
+    self.save
   end
 
-  def make_inactive
-    self.update_attribute(:active, false)
+  def check_association
+  	return false unless self.shift_jobs.to_a.size == 0
   end
 end

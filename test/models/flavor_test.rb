@@ -20,32 +20,25 @@ class FlavorTest < ActiveSupport::TestCase
     end
     
     #Should Testing
-    # test the scope 'alphabetical'
-    should "shows that there are four flavors in in alphabetical order" do
-      assert_equal ["Chocolate", "Mint Chocolate Chip", "Strawberry", "Vanilla"], Flavor.alphabetical.map{|f| f.name}
+    should "Show that there is one active flavor" do
+      assert_equal 1, Flavor.active.size
+      assert_equal ["Chocolate"], Flavor.active.map{|i| i.name}.sort
     end
-    
-    # test the scope 'active'
-    should "shows that there are three active flavors" do
-      assert_equal 3, Flavor.active.size
-      assert_equal ["Chocolate", "Mint Chocolate Chip", "Strawberry"], Flavor.active.map{|f| f.name}.sort
-    end
-    
-    # test the scope 'inactive'
-    should "shows that there is one inactive flavor" do
+
+    should "Show that there is one inactive flavor" do
       assert_equal 1, Flavor.inactive.size
-      assert_equal ["Vanilla"], Flavor.inactive.map{|f| f.name}.sort
+      assert_equal ["Vanilla"], Flavor.inactive.map{|i| i.name}.sort
     end
 
-    should "correctly assess that flavors are not destroyable" do
-      deny @chocolate.destroy
-      deny @vanilla.destroy
+    should "List the flavors in alphabetical order" do
+      assert_equal 2, Flavor.alphabetical.size
+      assert_equal ["Chocolate", "Vanilla"], Flavor.alphabetical.map{|i| i.name}.sort
     end
 
-    should "make an undestroyed flavor inactive" do
-      deny @chocolate.destroy
-      @chocolate.reload
-      deny @chocolate.active
+    should "Show that flavors are never deleted, only made inactive" do
+      @chocolate.destroy
+      assert_equal 2, Flavor.inactive.size
+      assert_equal ["Chocolate","Vanilla"], Flavor.inactive.map{|i| i.name}.sort
     end
   end
 end

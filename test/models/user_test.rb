@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  #Relationship Testing
   should belong_to(:employee)
 
   # Validating email...
@@ -20,36 +21,26 @@ class UserTest < ActiveSupport::TestCase
 
   context "Creating a context for users" do
     setup do 
-      create_employees
-      create_users
+      @ed = FactoryBot.create(:employee)
+      @gruberman = FactoryBot.create(:user, employee: @ed)
     end
     
     teardown do
-      remove_employees
-      remove_users
+       @ed.destroy
     end
 
-    should "shows that only active employees can have users" do
-      # demonstrate an active employee with an associated user
-      assert @alex.active
-      assert_not_nil @alex_user
-      # test an inactive employee can't have a user
-      @inactive = FactoryBot.build(:user, employee: @ralph)
-      deny @inactive.valid?
-      # test a non-existent employee can't have a user
-      @ghost = FactoryBot.build(:employee)
-      assert @ghost.valid?
-      @ghost_user = FactoryBot.build(:user, employee: @ghost)
-      deny @ghost_user.valid?
+    #Should Testing
+    should "Assure that user can only be added to an active employee" do
+      assert @gruberman.valid?
+      @bad_user = FactoryBot.build(:user, email:"bad@example.com", employee_id: 12)
+      assert !@bad_user.valid?
+      @bad_user.destroy
     end
 
-    should "destroy user if employee destroyed" do
-      freeman = FactoryBot.create(:employee, first_name: "Melanie", last_name: "Freeman", date_of_birth: 229.months.ago.to_date, role: "manager", phone: nil, ssn: "084359855")
-      freeman_user = FactoryBot.create(:user, employee: freeman, email: "mdf@example.com")
-      freeman_user.reload
-      assert_equal "mdf@example.com", freeman_user.email
-      assert freeman.destroy
-      assert freeman_user.destroyed?
+    should "Show that user is automatically deleted when employee is deleted" do
+      @ed.destroy
+      assert @ed.destroyed?
+      assert @gruberman.destroyed?
     end
 
   end

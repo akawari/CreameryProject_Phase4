@@ -1,7 +1,7 @@
 class Flavor < ApplicationRecord
   # Callbacks
-  before_destroy :is_destroyable?
-  after_rollback :convert_to_inactive
+  before_destroy :cancel_destroy
+  after_rollback :make_inactive
   
   # Relationships
   has_many :store_flavors
@@ -16,16 +16,13 @@ class Flavor < ApplicationRecord
   scope :alphabetical, -> { order(:name) }
 
   private
-  def is_destroyable?
-    @destroyable = false
+  #New Methods
+  def cancel_destroy
+  	return false
   end
   
-  def convert_to_inactive
-    make_inactive if !@destroyable.nil? && @destroyable == false
-    @destroyable = nil
-  end
-
   def make_inactive
-    self.update_attribute(:active, false)
+  	self.active = 0
+  	self.save
   end
 end
