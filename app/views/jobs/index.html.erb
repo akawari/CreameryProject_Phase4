@@ -1,10 +1,24 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Jobs</h1>
 
+<hr>
+
+<div class="col s6">
+<h5><u>Table Functions</u></h5>
+<br>
+<%= link_to 'View All Jobs', {controller: 'jobs', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Active Jobs', {controller: 'jobs', action: 'index', :active => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'View Inactive Jobs', {controller: 'jobs', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn amber'  %>
+<%= link_to 'Sort By Alphabetical', {controller: 'jobs', action: 'index', :alphabetical => true}, :class => 'waves-effect waves-light btn grey'  %>
+</div>
+<br>
+<hr>
+<br>
+
+<% unless @jobs.empty? %>
 <table>
   <thead>
     <tr>
+      <th>Job ID</th>
       <th>Name</th>
       <th>Description</th>
       <th>Active</th>
@@ -15,12 +29,12 @@
   <tbody>
     <% @jobs.each do |job| %>
       <tr>
+        <td><%= link_to job.id, job %></td>
         <td><%= job.name %></td>
         <td><%= job.description %></td>
         <td><%= job.active %></td>
-        <td><%= link_to 'Show', job %></td>
-        <td><%= link_to 'Edit', edit_job_path(job) %></td>
-        <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_job_path(job), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <td><%= link_to 'Destroy', job, method: :destroy, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +42,13 @@
 
 <br>
 
-<%= link_to 'New Job', new_job_path %>
+<%= link_to "Click Here to View Shift Job Details", shift_jobs_path, :class=>"btn waves-effect waves-light grey" %>
+
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @jobs, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>

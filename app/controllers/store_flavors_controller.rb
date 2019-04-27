@@ -4,7 +4,7 @@ class StoreFlavorsController < ApplicationController
   # GET /store_flavors
   # GET /store_flavors.json
   def index
-    @store_flavors = StoreFlavor.all
+    @store_flavors = StoreFlavor.all.paginate(:page => params[:page]).per_page(10)
   end
 
   # GET /store_flavors/1

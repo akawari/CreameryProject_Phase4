@@ -1,10 +1,13 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
+  has_scope :alphabetical
+  has_scope :active
+  has_scope :inactive
 
   # GET /jobs
   # GET /jobs.json
   def index
-    @jobs = Job.all
+    @jobs = apply_scopes(Job).alphabetical.paginate(:page => params[:page]).per_page(10)
   end
 
   # GET /jobs/1
@@ -60,7 +63,7 @@ class JobsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_job

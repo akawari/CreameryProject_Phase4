@@ -1,10 +1,25 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Flavors</h1>
+
+<hr>
+
+<div class="col s6">
+<h5><u>Table Functions</u></h5>
+<br>
+<%= link_to 'View All Flavors', {controller: 'flavors', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Active Flavors', {controller: 'flavors', action: 'index', :active => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'View Inactive Flavors', {controller: 'flavors', action: 'index', :inactive => true}, :class => 'waves-effect waves-light btn amber'  %>
+<%= link_to 'Sort By Alphabetical', {controller: 'flavors', action: 'index', :alphabetical => true}, :class => 'waves-effect waves-light btn grey'  %>
+</div>
+<br>
+<hr>
+<br>
+
+<% unless @flavors.empty? %>
 
 <table>
   <thead>
     <tr>
+      <th>Flavor ID</th>
       <th>Name</th>
       <th>Active</th>
       <th colspan="3"></th>
@@ -14,11 +29,11 @@
   <tbody>
     <% @flavors.each do |flavor| %>
       <tr>
+        <td><%= link_to flavor.id, flavor %></td>
         <td><%= flavor.name %></td>
         <td><%= flavor.active %></td>
-        <td><%= link_to 'Show', flavor %></td>
-        <td><%= link_to 'Edit', edit_flavor_path(flavor) %></td>
-        <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_flavor_path(flavor), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +41,11 @@
 
 <br>
 
-<%= link_to 'New Flavor', new_flavor_path %>
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @jobs, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>

@@ -1,10 +1,13 @@
 class FlavorsController < ApplicationController
   before_action :set_flavor, only: [:show, :edit, :update, :destroy]
+  has_scope :alphabetical
+  has_scope :active
+  has_scope :inactive
 
   # GET /flavors
   # GET /flavors.json
   def index
-    @flavors = Flavor.all
+    @flavors = apply_scopes(Flavor).alphabetical.paginate(:page => params[:page]).per_page(10)
   end
 
   # GET /flavors/1

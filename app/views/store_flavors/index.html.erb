@@ -1,12 +1,13 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Store Flavors</h1>
 
+<% unless @store_flavors.empty? %>
 <table>
   <thead>
     <tr>
-      <th>Store</th>
-      <th>Flavor</th>
+      <th>Store ID</th>
+      <th>Store Name</th>
+      <th>Flavor ID</th>
+      <th>Flavor Name</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,11 +15,15 @@
   <tbody>
     <% @store_flavors.each do |store_flavor| %>
       <tr>
-        <td><%= store_flavor.store_id %></td>
-        <td><%= store_flavor.flavor_id %></td>
-        <td><%= link_to 'Show', store_flavor %></td>
-        <td><%= link_to 'Edit', edit_store_flavor_path(store_flavor) %></td>
-        <td><%= link_to 'Destroy', store_flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to store_flavor.store_id, store_path(store_flavor.store_id) %></td>
+        <td><%= store_flavor.store.name %></td>
+        <td><%= link_to store_flavor.flavor_id, flavor_path(store_flavor.flavor_id) %></td>
+        <td><%= store_flavor.flavor.name %></td>
+        <td><%= link_to 'Show', store_flavor, :class=>"btn waves-effect waves-light light-blue" %></td>
+        <td><%= link_to 'Edit', edit_store_flavor_path(store_flavor), :class=>"btn waves-effect waves-light amber"%></td>
+        <% if current_user.employee.role == "admin" %>
+        <td><%= link_to 'Destroy', store_flavor, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn waves-effect waves-light pink" %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +31,20 @@
 
 <br>
 
-<%= link_to 'New Store Flavor', new_store_flavor_path %>
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
+
+<hr>
+<br>
+
+<% if current_user.employee.role == "admin" %>
+
+<%= link_to 'New Store Flavor', new_store_flavor_path, :class=>"btn waves-effect waves-light grey" %>
+
+<% end %>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @store_flavors, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>

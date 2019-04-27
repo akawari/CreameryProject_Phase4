@@ -1,12 +1,11 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Shift Jobs</h1>
 
+<% unless @shift_jobs.empty? %>
 <table>
   <thead>
     <tr>
-      <th>Shift</th>
-      <th>Job</th>
+      <th>Shift ID</th>
+      <th>Job ID</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,11 +13,11 @@
   <tbody>
     <% @shift_jobs.each do |shift_job| %>
       <tr>
-        <td><%= shift_job.shift_id %></td>
-        <td><%= shift_job.job_id %></td>
-        <td><%= link_to 'Show', shift_job %></td>
-        <td><%= link_to 'Edit', edit_shift_job_path(shift_job) %></td>
-        <td><%= link_to 'Destroy', shift_job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to shift_job.shift_id, shift_path(shift_job.shift_id) %></td>
+        <td><%= link_to shift_job.job_id, job_path(shift_job.job_id) %></td>
+        <td><%= link_to 'Show', shift_job, :class=>"btn waves-effect waves-light light-blue" %></td>
+        <td><%= link_to 'Edit', edit_shift_job_path(shift_job), :class=>"btn waves-effect waves-light amber" %></td>
+        <td><%= link_to 'Destroy', shift_job, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn waves-effect waves-light pink" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +25,21 @@
 
 <br>
 
-<%= link_to 'New Shift Job', new_shift_job_path %>
+
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<br>
+<% end %>
+
+<hr>
+<br>
+<% if current_user.employee.role == "admin" %>
+
+<%= link_to 'New Shift Job', new_shift_job_path, :class=>"btn waves-effect waves-light grey" %>
+
+<% end %>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @shift_jobs, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>

@@ -4,7 +4,7 @@ class ShiftJobsController < ApplicationController
   # GET /shift_jobs
   # GET /shift_jobs.json
   def index
-    @shift_jobs = ShiftJob.all
+    @shift_jobs = ShiftJob.all.paginate(:page => params[:page]).per_page(10)
   end
 
   # GET /shift_jobs/1
