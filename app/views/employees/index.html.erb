@@ -76,7 +76,9 @@
         </td>
         <td><%= employee.user.email %></td>
         <td><%= employee.active %></td>
+        <% if current_user.employee.role == "manager" && employee.id == current_user.employee.id %>
         <td><%= link_to 'Edit', edit_employee_path(employee), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <% end %>
         <% if current_user.employee.role == "admin" %>
         <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
         <% end %>

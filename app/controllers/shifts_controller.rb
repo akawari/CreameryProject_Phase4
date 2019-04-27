@@ -1,10 +1,16 @@
 class ShiftsController < ApplicationController
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
+  has_scope :completed
+  has_scope :incompleted
+  has_scope :past
+  has_scope :upcoming
+  has_scope :by_store
+  has_scope :by_employee
 
   # GET /shifts
   # GET /shifts.json
   def index
-    @shifts = Shift.all
+    @shifts = apply_scopes(Shift).all.paginate(:page => params[:page]).per_page(10)
   end
 
   # GET /shifts/1

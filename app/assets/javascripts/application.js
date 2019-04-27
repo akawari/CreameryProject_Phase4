@@ -33,6 +33,15 @@ $(document).ready(function(){
         closeOnSelect: false // Close upon selecting a date,
     });
     
+    $('.timepicker').pickatime({
+        default: 'now',
+        twelvehour: false, // change to 12 hour AM/PM clock from 24 hour
+        donetext: 'OK',
+        format:"HH:MM:SS",
+        autoclose: false,
+        vibrate: true 
+    });
+    
     setTimeout(function(){
         $('body').addClass('loaded');
     }, 3000);

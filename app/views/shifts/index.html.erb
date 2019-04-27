@@ -2,10 +2,36 @@
 
 <h1>Shifts</h1>
 
+<hr>
+<h5><u>Table Functions</u></h5>
+<br>
+
+<div class="col s6">
+<%= link_to 'View All Shifts', {controller: 'shifts', action: 'index'}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Completed Shifts', {controller: 'shifts', action: 'index', :completed => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'View Incomplete Shifts', {controller: 'shifts', action: 'index', :incompleted => true}, :class => 'waves-effect waves-light btn amber'  %>
+</div>
+
+<br> 
+
+<div class="col s6">
+<%= link_to 'View Upcoming Shifts', {controller: 'shifts', action: 'index', :upcoming => true}, :class=>"btn waves-effect waves-light light-blue"  %>
+<%= link_to 'View Past Shifts', {controller: 'shifts', action: 'index', :past => true}, :class=>"btn waves-effect waves-light pink"  %>
+<%= link_to 'Sort By Store', {controller: 'shifts', action: 'index', :by_store => true}, :class=>"btn waves-effect waves-light amber"  %>
+<%= link_to 'Sort By Employee', {controller: 'shifts', action: 'index', :by_employee => true}, :class=>"btn waves-effect waves-light grey"  %>
+</div>
+
+<br>
+
+<hr>
+
+
+<% unless @shifts.empty? %>
 <table>
   <thead>
     <tr>
-      <th>Assignment</th>
+      <th>Shift ID</th>
+      <th>Assignment ID</th>
       <th>Date</th>
       <th>Start time</th>
       <th>End time</th>
@@ -17,14 +43,16 @@
   <tbody>
     <% @shifts.each do |shift| %>
       <tr>
-        <td><%= shift.assignment_id %></td>
+        <td><%= link_to shift.id, shift %></td>
+        <td><%= link_to shift.assignment_id, assignment_path(shift.assignment_id) %></td>
         <td><%= shift.date %></td>
         <td><%= shift.start_time %></td>
         <td><%= shift.end_time %></td>
         <td><%= shift.notes %></td>
-        <td><%= link_to 'Show', shift %></td>
-        <td><%= link_to 'Edit', edit_shift_path(shift) %></td>
-        <td><%= link_to 'Destroy', shift, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_shift_path(shift), :class=>"btn waves-effect waves-light light-blue" %></td>
+        <% if current_user.employee.role == "admin" %>
+        <td><%= link_to 'Destroy', shift, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'waves-effect waves-light btn pink' %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +60,11 @@
 
 <br>
 
-<%= link_to 'New Shift', new_shift_path %>
+<% else %>
+<h5><strong><font color="red">No Records Found!</font></strong></h5>
+<% end %>
+
+<!-- Add the pagination using will_paginate gem -->
+<span class="paginate">
+<%= will_paginate @shifts, :previous_label => "Previous&nbsp;", :next_label => "&nbsp;Next" %>
+</span>

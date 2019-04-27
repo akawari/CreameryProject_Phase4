@@ -8,11 +8,11 @@
             </li>
             <!-- View Current_User Shift Detail -->
             <li>
-                <a href="<%= employee_path(current_user.employee.id) %>" class= "btn-floating pink lighten-1 btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Shift Details"><i class="material-icons">autorenew</i></a>
+                <a href="<%= shift_path(1) %>" class= "btn-floating pink lighten-1 btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Shift Details"><i class="material-icons">autorenew</i></a>
             </li>
             <!-- View Current_User Job Detail -->
             <li>
-                <a href="<%= employee_path(current_user.employee.id) %>" class= "btn-floating amber btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Job Details"><i class="material-icons">work</i></a>
+                <a href="<%= job_path(1) %>" class= "btn-floating amber btn-large tooltipped" data-position="top" data-delay="50" data-tooltip="View My Job Details"><i class="material-icons">work</i></a>
             </li>
             <!-- Reset Password-->
             <li>
